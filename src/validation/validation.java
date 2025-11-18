@@ -23,12 +23,12 @@ public class validation {
             }
         }
         main.inp.nextLine();
-        System.out.println("Enter User Email: ");
+        System.out.print("Enter User Email: ");
         String email = main.inp.nextLine();
         
-        System.out.println("Enter Password: ");
+        System.out.print("Enter Password: ");
         String pass = main.inp.nextLine();
-        System.out.println("Choose role (1. Admin, 2. User): ");
+        System.out.print("Choose role (1. Admin, 2. User): ");
         int chooseRole = main.inp.nextInt();
         
         String role = "";
@@ -47,9 +47,9 @@ public class validation {
 
 public void login(){
 
-    System.out.println("Enter Email: ");
+    System.out.print("Enter Email: ");
     String email = main.inp.nextLine();
-    System.out.println("Enter Password: ");
+    System.out.print("Enter Password: ");
     String pass = main.inp.nextLine();
     
     config con = new config();

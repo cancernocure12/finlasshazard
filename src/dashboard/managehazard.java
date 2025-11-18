@@ -49,7 +49,7 @@ public class managehazard {
                     main.adminDashboard(uid);
                     break;
                     
-                    default: System.out.println("\nInvalid input, Try Again."); 
+                    default: System.out.print("\nInvalid input, Try Again."); 
             }
     
             System.out.print("\nDo you want to continue (yes / no): ");
@@ -67,17 +67,17 @@ public class managehazard {
             System.out.println("=========| ADD HAZARD  |========");
             System.out.println("====================================");
         
-            System.out.println("Enter Hazard Type: ");
+            System.out.print("Enter Hazard Type: ");
             String type = main.inp.nextLine();
-            System.out.println("Enter Description: ");
+            System.out.print("Enter Description: ");
             String desc = main.inp.nextLine();
-            System.out.println("Enter Location: ");
+            System.out.print("Enter Location: ");
             String loc = main.inp.nextLine();
             
              config con = new config();
         
-        String sql = "INSERT INTO tbl_hazard (h_type, h_desc, h_location) VALUES (?, ?, ?)";
-        con.addRecord(sql, type, desc, loc);
+        String sql = "INSERT INTO tbl_hazard (h_type, h_desc, h_location, h_status) VALUES (?, ?, ?, ?)";
+        con.addRecord(sql, type, desc, loc, "pending");
         
         }
         
@@ -117,10 +117,12 @@ public class managehazard {
         String desc = main.inp.nextLine();
         
         System.out.print("Enter New Location: ");
-        float loc = main.inp.nextFloat();
+        String loc = main.inp.nextLine();
+
         
-        String sqlUpdate = "UPDATE tbl_hazard SET h_type = ?, h_desc = ?, h_location = ?";
-        con.updateRecord(sqlUpdate, type, desc, loc);
+        String sqlUpdate = "UPDATE tbl_hazard SET h_type = ?, h_desc = ?, h_location = ? WHERE h_id = ?";
+        con.updateRecord(sqlUpdate, type, desc, loc, uid);
+
         
         System.out.println("\nRecord updated successfully!");
     

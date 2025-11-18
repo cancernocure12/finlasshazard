@@ -26,11 +26,11 @@ public class main {
         System.out.println("=======| WELCOME TO HAZARD REPORTING SYSTEM | =========");
         System.out.println("=========================================================");
         System.out.println("\n=====| MAIN MENU |=====");
-        System.out.println("1. Log in   ");
+        System.out.println("1. Login   ");
         System.out.println("2. Register ");
         System.out.println("3. Exit     ");
 
-        System.out.println("Choose an Option: ");
+        System.out.print("Choose an Option: ");
         int option = inp.nextInt();
         inp.nextLine();
 
@@ -66,7 +66,7 @@ public class main {
             System.out.println("3. Manage Records ");
             System.out.println("4. Exit ");
 
-            System.out.println("\nChoose an Option: ");
+            System.out.print("\nChoose an Option: ");
             int option = inp.nextInt();
             inp.nextLine();
 
@@ -85,13 +85,14 @@ public class main {
                     break;
 
                 case 3:
-                    
+                    managerecords mg = new managerecords();
+                    mg.managerecords(uid);
                     break;
 
                 case 4:
                     main(null);
                     break;
-                default: System.out.println("Invalid option, Try again..");
+                default: System.out.print("Invalid option, Try again..");
                 main(null);
             }
 
@@ -109,32 +110,40 @@ public class main {
            
             System.out.println("1. Add Hazard    ");
             System.out.println("2. View Hazard   ");
-            System.out.println("3. View Records  ");
-            System.out.println("4. Exit  ");
+            System.out.println("3. Update Hazard  ");
+            System.out.println("4. Delete Hazard ");
+            System.out.println("5. Exit  ");
             
         
             System.out.print("\nChoose an option: ");
             int option = inp.nextInt();
             inp.nextLine();
-        
+            
+            managehazard mh = new managehazard();
+            
             switch(option) {
             
                 case 1: 
-                    
+                    mh.addHazard();
                     break;
                     
                 case 2: 
-                    
+                    mh.viewHazard();
                     break;
             
                 case 3: 
-                    
+                    mh.viewHazard();
+                    mh.updateHazard();
                     break;
             
                 case 4: 
-                    
+                    mh.viewHazard();
+                    mh.deleteHazard();
                     break;
-                    
+                
+                case 5:    
+                    main(null);
+                    break;
             default: System.out.println("\nInvalid input, Try again.");
             
             

@@ -12,13 +12,13 @@ public class manageuser {
         System.out.println("\n=====================");
         System.out.println("=== Add User ===");
          System.out.println("=====================");
-        System.out.println("Add user Name: ");
+        System.out.print("Add user Name: ");
         String name = main.inp.nextLine();
-        System.out.println("Enter Email: ");
+        System.out.print("Enter Email: ");
         String email = main.inp.nextLine();
-        System.out.println("Enter Password : ");
+        System.out.print("Enter Password : ");
         String pass = main.inp.nextLine();
-        System.out.println("Choose Role (1. Admin, 2. User): ");
+        System.out.print("Choose Role (1. Admin, 2. User): ");
         int chooseRole = main.inp.nextInt();
         
         String role = "";
@@ -46,27 +46,27 @@ public class manageuser {
     
     public void updateUser(){
     
-        System.out.println("Enter id to update: ");
+        System.out.print("Enter id to update: ");
         int uid = main.inp.nextInt();
         main.inp.nextLine();
         
-        System.out.println("Add new User Name: ");
+        System.out.print("Add new User Name: ");
         String name = main.inp.nextLine();
-        System.out.println("Enter new user Email: ");
+        System.out.print("Enter new user Email: ");
         String email = main.inp.nextLine();
         
-        System.out.println("Enter new user Password: ");
+        System.out.print("Enter new user Password: ");
         String pass = main.inp.nextLine();
     
         config con = new config();
-        String sqlUpdate = "UPDATE tbl_user SET u_name = ?, u_email = ?, u_pass = ?, WHERE u_id = ? ";
+        String sqlUpdate = "UPDATE tbl_user SET u_name = ?, u_email = ?, u_pass = ? WHERE u_id = ? ";
         con.updateRecord(sqlUpdate, name, email, pass, uid);
     
     }
     
     public void deleteUser(){
     
-        System.out.println("Enter id to Delete ");
+        System.out.print("Enter id to Delete ");
         int did = main.inp.nextInt();
         
         config con = new config();
@@ -122,13 +122,13 @@ public class manageuser {
             System.out.println("=========| MANAGE USER |========");
             System.out.println("====================================");
           
-            System.out.println("1. Approve User    ");
-            System.out.println("2. Add User    ");
-            System.out.println("3. View User");
-            System.out.println("4. Update User ");
-            System.out.println("5. Delete User: ");
-            System.out.println("6. Exit: ");
-            System.out.println("\nChoose an Option: ");
+            System.out.println("1. Approve User  ");
+            System.out.println("2. Add User      ");
+            System.out.println("3. View User     ");
+            System.out.println("4. Update User   ");
+            System.out.println("5. Delete User   ");
+            System.out.println("6. Exit          ");
+            System.out.print("\nChoose an Option: ");
             int option = inp.nextInt();
             inp.nextLine();
         manageuser cd = new manageuser();

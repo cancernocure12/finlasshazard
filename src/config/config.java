@@ -235,5 +235,9 @@ public void deleteRecord(String sql, Object... values) {
             return null;
         }
     }
+
+    public boolean recordExists(String checkQuery, int rid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
