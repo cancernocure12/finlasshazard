@@ -1,87 +1,60 @@
 package dashboard;
 
-import main.main;
 import config.config;
+import main.main;
 
 public class managerecords {
-    
-    config con = new config();
-    
-    
-     public void approveRecord() {
 
-        System.out.println("\n--- Approve a Hazard Report ---");
+    public void manageRecords(int uid) {
 
-        System.out.print("Enter Hazard ID to approve: ");
-        int hid = main.inp.nextInt();
-        main.inp.nextLine();
-       
-        String updateQuery = "UPDATE tbl_hazard SET h_status = 'Approved' WHERE h_id = ?";
-        con.updateRecord(updateQuery, hid);
-
-        System.out.println("\n✔ Hazard successfully approved!");
-    }
-
-
-
-    
-   public void viewRecords() {
-
-        System.out.println("\n--- Submitted Hazard Reports ---");
-
-        String query =
-            "SELECT h_id, h_type, h_location, h_status FROM tbl_hazard";
-
-        String[] headers = {"Hazard ID", "Type", "Location", "Status"};
-        String[] cols    = {"h_id", "h_type", "h_location", "h_status"};
-
-        con.viewRecords(query, headers, cols);
-    }
-
-
-
-
-    
-    public void managerecords(int uid) {
-
-        String response;
-
-        do {
-            System.out.println("\n\n====================================");
-            System.out.println("=========| MANAGE RECORDS |========");
-            System.out.println("====================================");
+        while (true) {
+            System.out.println("\n================ MANAGE RECORDS ===============");
             System.out.println("1. View Hazard Records");
             System.out.println("2. Approve Hazard");
-            System.out.println("3. Exit");
+            System.out.println("3. Back");
 
-            System.out.print("\nChoose an option: ");
+            System.out.print("Choose: ");
             int option = main.inp.nextInt();
             main.inp.nextLine();
 
             switch (option) {
-
                 case 1:
-                    viewRecords();
-                    break;
-
+                        viewRecords();
+                         break;
                 case 2:
-                    viewRecords();     
-                    approveRecord();   
-                    break;
-
-                case 3:
-                    main.adminDashboard(uid);
-                    return;
-
-                default:
-                    System.out.print("\nInvalid input, Try Again.");
+                    viewRecords();
+                    approveRecord();
+                     break;
+                case 3: 
+                { return; }
+                 
+                 
+                default: System.out.println("Invalid.");
             }
+        }
+    }
 
-            System.out.print("\nDo you want to continue (yes / no): ");
-            response = main.inp.next();
+    public void viewRecords() {
 
-        } while (response.equalsIgnoreCase("yes") || response.equals("1"));
+        config con = new config();
 
-        main.adminDashboard(uid);
+        con.viewRecords(
+                "SELECT h_id, h_type, h_location, h_status, user_id FROM tbl_hazard",
+                new String[]{"ID", "TYPE", "LOCATION", "STATUS", "USER"},
+                new String[]{"h_id", "h_type", "h_location", "h_status", "user_id"}
+        );
+    }
+
+    public void approveRecord() {
+
+        config con = new config();
+
+        System.out.print("Enter Hazard ID to approve: ");
+        int id = main.inp.nextInt();
+        main.inp.nextLine();
+
+        con.updateRecord("UPDATE tbl_hazard SET h_status='Approved' WHERE h_id=?", id);
+
+        System.out.println("Hazard approved.");
     }
 }

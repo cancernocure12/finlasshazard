@@ -1,170 +1,190 @@
 package dashboard;
- import main.main;
- import config.config;
-import static main.main.inp;
+
+import config.config;
+import main.main;
+
+import java.util.List;
+import java.util.Map;
+
 public class manageuser {
 
-    public void addUser(){
-        System.out.println("\n=====================");
-        System.out.println("=== Add User ===");
-         System.out.println("=====================");
-        System.out.print("Add user Name: ");
-        String name = main.inp.nextLine();
-        System.out.print("Enter Email: ");
-        String email = main.inp.nextLine();
-        System.out.print("Enter Password : ");
-        String pass = main.inp.nextLine(); // Password input
-        System.out.print("Choose Role (1. Admin, 2. User): ");
-        int chooseRole = main.inp.nextInt();
-        main.inp.nextLine(); // Consume newline
+    public void manageUser(int uid) {
 
-        String role = "";
-        if(chooseRole == 1) {
-            role = "Admin";
-        } else{
-            role = "User";
-        }
+        while (true) {
+            System.out.println("\n================ MANAGE USERS ================");
+            System.out.println("1. Approve User");
+            System.out.println("2. Add User");
+            System.out.println("3. View Users");
+            System.out.println("4. Update User");
+            System.out.println("5. Delete User");
+            System.out.println("6. Back");
 
-        config con = new config();
-        String hashedPassword = con.hashPassword(pass); // HASH THE PASSWORD
-        if(hashedPassword == null) {
-            System.out.println("Failed to hash password. User not added.");
-            return;
-        }
+            System.out.print("Choose: ");
+            int option = main.inp.nextInt();
+            main.inp.nextLine();
 
-        String sql = "INSERT INTO tbl_user (u_name, u_email, u_pass, u_role, u_status) VALUES(?, ?, ?, ?, ?)";
-        con.addRecord(sql, name, email, hashedPassword, role, "Pending");
-    }
-
-    public void viewUser(){
-        // ... (rest of the method is fine)
-        config con = new config();
-        String hazardQuery = "SELECT * FROM tbl_user";
-        String[] hazardHeaders = {"ID", "NAME", "EMAIL", "PASSWORD", "ROLE", "STATUS" };
-        String[] hazardColumns = {"u_id", "u_name", "u_email", "u_pass", "u_role", "u_status" };
-
-        con.viewRecords(hazardQuery, hazardHeaders, hazardColumns);
-    }
-
-    public void updateUser(){
-
-        System.out.print("Enter id to update: ");
-        int uid = main.inp.nextInt();
-        main.inp.nextLine();
-
-        System.out.print("Add new User Name: ");
-        String name = main.inp.nextLine();
-        System.out.print("Enter new user Email: ");
-        String email = main.inp.nextLine();
-
-        System.out.print("Enter new user Password (or press Enter to keep old): ");
-        String pass = main.inp.nextLine();
-
-        config con = new config();
-
-        String sqlUpdate;
-        String hashedPassword = null;
-        if (!pass.trim().isEmpty()) {
-            hashedPassword = con.hashPassword(pass); // HASH THE NEW PASSWORD
-            sqlUpdate = "UPDATE tbl_user SET u_name = ?, u_email = ?, u_pass = ? WHERE u_id = ? ";
-            con.updateRecord(sqlUpdate, name, email, hashedPassword, uid);
-        } else {
-            // If password is empty, update only name and email
-            sqlUpdate = "UPDATE tbl_user SET u_name = ?, u_email = ? WHERE u_id = ? ";
-            con.updateRecord(sqlUpdate, name, email, uid);
-        }
-    }
-
-    public void deleteUser(){
-        // ... (rest of the method is fine)
-        System.out.print("Enter id to Delete ");
-        int did = main.inp.nextInt();
-        main.inp.nextLine(); // Consume newline
-
-        config con = new config();
-        String sqlDelete = "DELETE FROM tbl_user WHERE u_id = ?";
-        con.deleteRecord(sqlDelete, did);
-    }
-
-    public void approveUser(){
-        // ... (rest of the method is fine)
-        config con = new config();
-        System.out.print("Enter ID to Approve User: ");
-        int aid = main.inp.nextInt();
-        main.inp.nextLine();
-
-        String fetchQuery = "SELECT u_name, u_email, u_status FROM tbl_user WHERE u_id = ?";
-        java.util.List<java.util.Map<String, Object>> result = con.fetchRecords(fetchQuery, aid);
-        if (result.isEmpty()) {
-            System.out.println("User not found!");
-            return;
-        }
-        // String fullname = (String) result.get(0).get("u_name"); // Not used
-        // String email = (String) result.get(0).get("u_email"); // Not used
-        String currentStatus = (String) result.get(0).get("u_status");
-        if ("Approved".equalsIgnoreCase(currentStatus)) {
-            System.out.println("User is already approved.");
-            return;
-        }
-        String sqlUpdate = "UPDATE tbl_user SET u_status = ? WHERE u_id = ?";
-        con.updateRecord(sqlUpdate, "Approved", aid);
-        System.out.println("\nUser approved successfully!");
-    }
-
- public void manageuser (int uid){
-     // ... (rest of the method is fine, except for case 5)
-        String response;
-        do{
-            System.out.println("\n\n====================================");
-            System.out.println("=========| MANAGE USER |========");
-            System.out.println("====================================");
-
-            System.out.println("1. Approve User  ");
-            System.out.println("2. Add User      ");
-            System.out.println("3. View User     ");
-            System.out.println("4. Update User   ");
-            System.out.println("5. Delete User   ");
-            System.out.println("6. Exit          ");
-            System.out.print("\nChoose an Option: ");
-            int option = inp.nextInt();
-            inp.nextLine();
-        manageuser cd = new manageuser();
-            switch(option){
-
+            switch (option) {
                 case 1:
-                    cd.viewUser();
-                    cd.approveUser();
+                    viewUser();
+                    approveUser();
                     break;
                 case 2:
-                    cd.addUser();
+                    addUser();
+                    break;
+                case 3:
+                    viewUser();
+                    break;
+                case 4:
+                    viewUser();
+                    updateUser();
+                    break;
+                case 5:
+                    viewUser();
+                    deleteUser(uid);
                     break;
 
-                 case 3:
-                    cd.viewUser();
-
-                    break;
-
-                 case 4:
-                    cd.viewUser();
-                    cd.updateUser();
-                    break;
-                 case 5:
-                     cd.viewUser();
-                     cd.deleteUser();
-                     break; // Added break to stop fall-through
-                 case 6:
-                     main.adminDashboard(uid);
-                     return; // Added return to exit the method
-
-                default: System.out.println("\nInvalid input, Try Again.");
-
+                case 6: return;
+                default:
+                    System.out.println("Invalid choice.");
             }
-            System.out.print("\nDo you want to continue (yes / no): ");
-            response = main.inp.next();
-        }while(response.equals("yes") || response.equals("1"));
-            main.adminDashboard(uid);
+        }
+    }
 
+    
+    public void addUser() {
 
+        config con = new config();
+
+        System.out.print("Enter Name: ");
+        String name = main.inp.nextLine();
+
+        
+        while (!con.fetchRecords("SELECT * FROM tbl_user WHERE u_name=?", name).isEmpty()) {
+            System.out.print("Username exists. Enter new name: ");
+            name = main.inp.nextLine();
         }
 
- }
+        System.out.print("Enter Email: ");
+        String email = main.inp.nextLine();
+
+        
+        while (!con.fetchRecords("SELECT * FROM tbl_user WHERE u_email=?", email).isEmpty()) {
+            System.out.print("Email already registered. Enter new email: ");
+            email = main.inp.nextLine();
+        }
+
+        System.out.print("Enter Password: ");
+        String pass = main.inp.nextLine();
+
+        System.out.print("Role (1=Admin, 2=User): ");
+        int roleChoice = main.inp.nextInt();
+        main.inp.nextLine();
+
+        String role = (roleChoice == 1) ? "Admin" : "User";
+        String status = role.equals("Admin") ? "Approved" : "Pending";
+
+        String sql = "INSERT INTO tbl_user (u_name, u_email, u_pass, u_role, u_status) "
+                + "VALUES (?, ?, ?, ?, ?)";
+
+        con.addRecord(sql, name, email, con.hashPassword(pass), role, status);
+
+        System.out.println("\nUser successfully added.");
+    }
+
+    
+    public void viewUser() {
+        config con = new config();
+        con.viewRecords(
+                "SELECT u_id, u_name, u_email, u_role, u_status FROM tbl_user",
+                new String[]{"ID", "Name", "Email", "Role", "Status"},
+                new String[]{"u_id", "u_name", "u_email", "u_role", "u_status"}
+        );
+    }
+
+    
+    public void approveUser() {
+        config con = new config();
+
+        System.out.print("Enter User ID to approve: ");
+        int id = main.inp.nextInt();
+        main.inp.nextLine();
+
+        List<Map<String, Object>> check = con.fetchRecords(
+                "SELECT * FROM tbl_user WHERE u_id=?", id
+        );
+
+        if (check.isEmpty()) {
+            System.out.println("User not found.");
+            return;
+        }
+
+        con.updateRecord("UPDATE tbl_user SET u_status='Approved' WHERE u_id=?", id);
+
+        System.out.println("User approved!");
+    }
+
+    
+    public void updateUser() {
+        config con = new config();
+
+        System.out.print("Enter User ID: ");
+        int id = main.inp.nextInt();
+        main.inp.nextLine();
+
+        List<Map<String, Object>> check = con.fetchRecords(
+                "SELECT * FROM tbl_user WHERE u_id=?", id
+        );
+
+        if (check.isEmpty()) {
+            System.out.println("User not found.");
+            return;
+        }
+
+        System.out.print("New Name: ");
+        String name = main.inp.nextLine();
+
+        System.out.print("New Email: ");
+        String email = main.inp.nextLine();
+
+        System.out.print("New Password (blank = keep old): ");
+        String pass = main.inp.nextLine();
+
+        if (pass.isEmpty()) {
+            con.updateRecord(
+                    "UPDATE tbl_user SET u_name=?, u_email=? WHERE u_id=?",
+                    name, email, id
+            );
+        } else {
+            con.updateRecord(
+                    "UPDATE tbl_user SET u_name=?, u_email=?, u_pass=? WHERE u_id=?",
+                    name, email, con.hashPassword(pass), id
+            );
+        }
+
+        System.out.println("User updated.");
+    }
+
+    
+    public void deleteUser(int currentAdminId) {
+        config con = new config();
+
+        System.out.print("Enter User ID to delete: ");
+        int id = main.inp.nextInt();
+        main.inp.nextLine();
+
+        
+        if (id == currentAdminId) {
+            System.out.println("You cannot delete your own account.");
+            return;
+        }
+
+       
+        if (con.fetchRecords("SELECT * FROM tbl_user WHERE u_id=?", id).isEmpty()) {
+            System.out.println("User not found.");
+            return;
+        }
+
+        con.deleteRecord("DELETE FROM tbl_user WHERE u_id=?", id);
+        System.out.println("User deleted.");
+    }
+}

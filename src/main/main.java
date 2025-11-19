@@ -1,135 +1,132 @@
 package main;
-import config.config;
-import dashboard.manageuser;
-import java.util.Scanner;
+
 import validation.validation;
+import dashboard.manageuser;
 import dashboard.managehazard;
 import dashboard.managerecords;
+
+import java.util.Scanner;
+
 public class main {
+
     public static Scanner inp = new Scanner(System.in);
+
     public static void main(String[] args) {
-        config con = new config();
-        validation vl = new validation();
+        new main().showMainMenu();
+    }
 
+    public void showMainMenu() {
 
-        System.out.println("========================================================");
-        System.out.println("=======| WELCOME TO HAZARD REPORTING SYSTEM | =========");
-        System.out.println("=========================================================");
-        System.out.println("\n=====| MAIN MENU |=====");
-        System.out.println("1. Login   ");
-        System.out.println("2. Register ");
-        System.out.println("3. Exit     ");
-        System.out.print("Choose an Option: ");
-        int option = inp.nextInt();
-        inp.nextLine();
-        switch (option) {
-            case 1:
-                vl.login();
-                break;
-            case 2:
-                vl.register();
-                break;
-            case 3:
-                System.out.println("Thank you!!");
-                break;
-            default:
-                System.out.println("Invalid option, Try again..");
-                main(null); 
+        while (true) {
+            System.out.println("\n====================================================");
+            System.out.println("========   HAZARD REPORTING SYSTEM   ===============");
+            System.out.println("====================================================");
+
+            System.out.println("\n1. Login");
+            System.out.println("2. Register");
+            System.out.println("3. Exit");
+
+            System.out.print("Choose an option: ");
+            int option = inp.nextInt();
+            inp.nextLine();
+
+            validation v = new validation();
+
+            switch (option) {
+                case 1:
+                    v.login();
+                    break;
+                case 2:
+                    v.register();
+                    break;
+                case 3: {
+                    System.out.println("Thank you for using the system!");
+                    System.exit(0);
+                }
+
+                default:
+                    System.out.println("Invalid choice, try again.");
+            }
         }
     }
+
     public static void adminDashboard(int uid) {
-            config con = new config();
 
-            System.out.println("\n\n====================================");
-            System.out.println("=========| ADMIN DASHBOARD |========");
-            System.out.println("====================================");
+        manageuser mu = new manageuser();
+        managehazard mh = new managehazard();
+        managerecords mr = new managerecords();
 
-            System.out.println("1. Manage User    ");
-            System.out.println("2. Manage Hazard  ");
-            System.out.println("3. Manage Records ");
-            System.out.println("4. Exit ");
-            System.out.print("\nChoose an Option: ");
+        while (true) {
+            System.out.println("\n=================== ADMIN DASHBOARD ===================");
+            System.out.println("1. Manage Users");
+            System.out.println("2. Manage Hazards");
+            System.out.println("3. Manage Records");
+            System.out.println("4. Logout");
+
+            System.out.print("Choose an option: ");
             int option = inp.nextInt();
             inp.nextLine();
 
             switch (option) {
                 case 1:
-                    manageuser mu = new manageuser();
-                    mu.manageuser(uid);
+                    mu.manageUser(uid);
                     break;
                 case 2:
-                    managehazard mh = new managehazard();
-                    mh.managehazard(uid);
+                    mh.manageHazard(uid);
                     break;
                 case 3:
-                    managerecords mg = new managerecords();
-                    mg.managerecords(uid);
+                    mr.manageRecords(uid);
                     break;
-                case 4:
-                    main(null); 
-                    break;
+                case 4: {
+                    System.out.println("Logging out...");
+                    return;
+                }
                 default:
-                    System.out.print("Invalid option, Try again..");
-                    adminDashboard(uid); 
+                    System.out.println("Invalid choice.");
             }
+        }
     }
-    public static void userDashboard(){
 
-        String response;
-        do {
+    public static void userDashboard(int uid) {
 
-           System.out.println("\n====================================");
-           System.out.println("=========| USER DASHBOARD |========");
-           System.out.println("====================================");
+        managehazard mh = new managehazard();
 
+        while (true) {
+            System.out.println("\n=================== USER DASHBOARD ===================");
+            System.out.println("1. Add Hazard");
+            System.out.println("2. View My Hazards");
+            System.out.println("3. Update Hazard");
+            System.out.println("4. Delete Hazard");
+            System.out.println("5. Logout");
 
-            System.out.println("1. Add Hazard    ");
-            System.out.println("2. View Hazard   ");
-            System.out.println("3. Update Hazard  ");
-            System.out.println("4. Delete Hazard ");
-            System.out.println("5. Exit  ");
-
-
-            System.out.print("\nChoose an option: ");
+            System.out.print("Choose: ");
             int option = inp.nextInt();
             inp.nextLine();
 
-            managehazard mh = new managehazard();
-
-            switch(option) {
-
+            switch (option) {
                 case 1:
-                    mh.addHazard();
+                    mh.viewUserHazards(uid);
+                    mh.addHazard(uid);
                     break;
-
                 case 2:
-                    mh.viewHazard();
+                    mh.viewUserHazards(uid);
                     break;
-
                 case 3:
-                    mh.viewHazard();
-                    mh.updateHazard();
+                    mh.viewUserHazards(uid);
+                    mh.updateHazard(uid);
                     break;
-
                 case 4:
-                    mh.viewHazard();
-                    mh.deleteHazard();
+                    mh.viewUserHazards(uid);
+                    mh.deleteHazard(uid);
                     break;
-
-                case 5:
-                    main(null);
-                    return; 
-            default: System.out.println("\nInvalid input, Try again.");
-
-
+                case 5: {
+                    System.out.println("Logging out...");
+                    return;
+                }
+                default:
+                    System.out.println("Invalid choice.");
             }
-
-            System.out.print("\nDo you want to continue (yes / no): ");
-            response = inp.next();
-        }while(response.equals("yes") || response.equals("1"));
-        main(null);
-        return;
-
+        }
     }
 
 }
